@@ -1,16 +1,38 @@
 const express = require("express");
 const router = express.Router();
-const code = require("../constants/code");
-// const authService = require("../services/auth");
+const authService = require("../services/auth");
 
-router.get("/", login);
+router.post("/login", login);
+router.post("/register", signup);
 
 function login(req, res) {
-  return res.json({
-    code: code.OK,
-    message: "You clicked Login button",
-    data: "You called backend api successfuly",
-  });
+  let data = {
+    email: req.body.email,
+    password: req.body.password,
+  };
+  authService
+    .login(data)
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+}
+
+function signup(req, res) {
+  let data = {
+    email: req.body.email,
+    password: req.body.password,
+  };
+  authService
+    .signup(data)
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
 }
 
 module.exports = router;
