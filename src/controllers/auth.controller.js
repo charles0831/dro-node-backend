@@ -36,15 +36,13 @@ exports.signin = (req, res) => {
       return;
     }
     if (!user) {
-      return res
-        .status(404)
-        .send({ code: code.NOT_FOUND, message: "User Not found." });
+      return res.json({ code: code.NOT_FOUND, message: "User Not found." });
     }
     var passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
     if (!passwordIsValid) {
-      return res.status(401).send({
+      return res.json({
         code: code.UNAUTHORIZED,
-        accessToken: null,
+        token: null,
         message: "Invalid Password!",
       });
     }
@@ -54,11 +52,11 @@ exports.signin = (req, res) => {
     res.status(200).send({
       code: code.OK,
       message: "User was logged in successfully!",
+      token: token,
       data: {
         id: user._id,
         username: user.username,
         email: user.email,
-        token: token,
       },
     });
   });

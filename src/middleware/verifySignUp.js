@@ -11,7 +11,7 @@ checkDuplicateUsernameOrEmail = (req, res, next) => {
       return;
     }
     if (user) {
-      res.status(400).send({
+      res.json({
         code: code.INVALID_INPUT_PARAMS,
         message: "Failed! Email is already in use!",
       });
